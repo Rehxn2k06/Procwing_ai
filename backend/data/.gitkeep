@@ -1,0 +1,2 @@
+# store.json is generated at runtime and gitignored.
+# This .gitkeep ensures the data/ directory is tracked by git.

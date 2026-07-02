@@ -19,7 +19,7 @@ NORMALIZATION_SUFFIXES = [
 
 # --- Punctuation to remove and collapse ---
 # Any character in this set will be replaced by a space.
-PUNCTUATION_TO_REMOVE = re.compile(r"[.,-&]")
+PUNCTUATION_TO_REMOVE = re.compile(r"[.,&-]")
 
 
 # --- Customer Reference for Matching ---
