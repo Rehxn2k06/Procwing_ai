@@ -21,7 +21,7 @@ def format_inr(amount: float) -> str:
     # 2. Process the integer part from right to left. Insert a comma after the first 3 digits.
     # 3. Then, insert a comma after every 2 digits thereafter.
     
-    formatted_str = f"{amount:,.2f}" # Basic formatting with thousands separator
+    formatted_str = f"{amount:.2f}" # Basic formatting with thousands separator
     
     if "." in formatted_str:
         integer_part, decimal_part = formatted_str.split(".", 1)
