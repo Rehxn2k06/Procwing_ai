@@ -8,6 +8,13 @@ import re
 # Import necessary types and functions from other modules
 from .ageing import PaymentSchedule, CollectionFollowup
 
+# Maximum number of individual invoice lines to include in a WhatsApp message.
+# Twilio Sandbox enforces a ~1,600-character limit per outbound message; listing
+# every invoice for customers with 15-25 invoices easily exceeds that.  We show
+# the first MAX_INVOICE_LINES invoices and append a "...and X more" summary line
+# so the key totals and ageing breakdown are always fully visible.
+_MAX_INVOICE_LINES: int = 7
+
 # --- Formatting Helper Functions ---
 
 def format_inr(amount: float) -> str:
@@ -114,10 +121,13 @@ def render_payment_schedule_message(schedule: PaymentSchedule) -> str:
         message_lines.append("")
         return "\n".join(message_lines) # Early exit if no dues
 
-    # Invoice List (append if there was overdue amount or due this week amount)
+    # Invoice List (append if there was overdue amount or due this week amount).
+    # Capped at _MAX_INVOICE_LINES to stay within Twilio's message size limit.
     if schedule.invoices:
         message_lines.append("*Invoice Details:*")
-        for inv in schedule.invoices:
+        shown = schedule.invoices[:_MAX_INVOICE_LINES]
+        remaining = len(schedule.invoices) - len(shown)
+        for inv in shown:
             invoice_no = inv.get("invoice_no", "N/A")
             due_date_str = inv.get("due_date")
             outstanding = inv.get("outstanding", 0.0)
@@ -129,11 +139,13 @@ def render_payment_schedule_message(schedule: PaymentSchedule) -> str:
                     due_date = date.fromisoformat(due_date_str)
                     due_line += f", Due: {format_date_ddmonyyyy(due_date)}"
                 except ValueError:
-                    due_line += f", Due: {due_date_str}" # Fallback if parsing fails
-            
+                    due_line += f", Due: {due_date_str}"  # Fallback if parsing fails
+
             due_line += f", Outstanding: {format_inr(outstanding)}"
             message_lines.append(due_line)
-        message_lines.append("") # Blank line after invoice list
+        if remaining > 0:
+            message_lines.append(f"...and {remaining} more invoice(s). See portal for full list.")
+        message_lines.append("")  # Blank line after invoice list
 
     # Handle NO_DUE_DATE if present (important edge case)
     if schedule.no_due_date_count > 0:
@@ -187,10 +199,13 @@ def render_collection_followup_message(followup: CollectionFollowup) -> str:
             message_lines.append(f"{label.ljust(label_width)} {format_inr(amount).rjust(amount_width)}")
     message_lines.append("") # Blank line after breakdown
     
-    # Invoice List
+    # Invoice List.
+    # Capped at _MAX_INVOICE_LINES to stay within Twilio's message size limit.
     if followup.invoices:
         message_lines.append("*Outstanding Invoices:*")
-        for inv in followup.invoices:
+        shown = followup.invoices[:_MAX_INVOICE_LINES]
+        remaining = len(followup.invoices) - len(shown)
+        for inv in shown:
             invoice_no = inv.get("invoice_no", "N/A")
             due_date_str = inv.get("due_date")
             outstanding = inv.get("outstanding", 0.0)
@@ -201,11 +216,13 @@ def render_collection_followup_message(followup: CollectionFollowup) -> str:
                     due_date = date.fromisoformat(due_date_str)
                     due_line += f", Due: {format_date_ddmonyyyy(due_date)}"
                 except ValueError:
-                    due_line += f", Due: {due_date_str}" # Fallback
-            
+                    due_line += f", Due: {due_date_str}"  # Fallback
+
             due_line += f", Outstanding: {format_inr(outstanding)}"
             message_lines.append(due_line)
-        message_lines.append("") # Blank line after invoice list
+        if remaining > 0:
+            message_lines.append(f"...and {remaining} more invoice(s). See portal for full list.")
+        message_lines.append("")  # Blank line after invoice list
 
     # Closing
     message_lines.append("We kindly request you to settle this amount at your earliest convenience.")

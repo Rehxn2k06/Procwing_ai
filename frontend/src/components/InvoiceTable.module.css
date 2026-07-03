@@ -1,0 +1,309 @@
+/* components/InvoiceTable.module.css */
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ---- Status bar ---- */
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 24px;
+}
+
+.countText {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* ---- Table wrapper ---- */
+.tableWrapper {
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  background: var(--color-surface);
+}
+
+.table thead tr {
+  background: var(--color-surface-2);
+  border-bottom: 1.5px solid var(--color-border);
+}
+
+.table th {
+  padding: var(--space-3) var(--space-4);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  vertical-align: middle;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.table tbody tr:hover {
+  background: var(--color-surface-2);
+}
+
+/* Highlight rows due this week */
+.dueThisWeek {
+  background: #fffbeb !important;
+}
+
+/* ---- Column-specific styles ---- */
+.customerCell {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.spocCell {
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.monoCell {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.dateCell {
+  white-space: nowrap;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.numberCol {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.actionCol {
+  width: 48px;
+  text-align: center;
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+/* ---- Empty / error ---- */
+.emptyCell {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--space-10) !important;
+  font-size: 0.9rem;
+}
+
+/* ---- Ageing bucket badges ---- */
+.badge {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badgeNotDue {
+  background: var(--bucket-not-due-bg);
+  color: var(--bucket-not-due-text);
+}
+
+.badge015 {
+  background: var(--bucket-0-15-bg);
+  color: var(--bucket-0-15-text);
+}
+
+.badge1630 {
+  background: var(--bucket-16-30-bg);
+  color: var(--bucket-16-30-text);
+}
+
+.badge3160 {
+  background: var(--bucket-31-60-bg);
+  color: var(--bucket-31-60-text);
+}
+
+.badge6190 {
+  background: var(--bucket-61-90-bg);
+  color: var(--bucket-61-90-text);
+}
+
+.badge90plus {
+  background: var(--bucket-90-plus-bg);
+  color: var(--bucket-90-plus-text);
+}
+
+.badgeNoDue {
+  background: var(--bucket-no-due-bg);
+  color: var(--bucket-no-due-text);
+}
+
+/* ---- Preview button ---- */
+.previewBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+  padding: var(--space-1);
+  transition: transform var(--transition-fast), background var(--transition-fast);
+}
+
+.previewBtn:hover {
+  transform: scale(1.2);
+  background: var(--color-surface-2);
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+}
+
+.pageInfo {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  min-width: 90px;
+  text-align: center;
+}
+
+/* ---- Preview modal ---- */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--space-4);
+}
+
+.modal {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 80dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.modalTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.modalClose {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.modalClose:hover {
+  color: var(--color-text);
+  background: var(--color-surface-2);
+}
+
+.modalTabs {
+  display: flex;
+  gap: 1px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+
+.modalTab {
+  flex: 1;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-surface-2);
+  border: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.modalTab:hover {
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.modalTabActive {
+  background: var(--color-surface) !important;
+  color: var(--color-primary) !important;
+  font-weight: 600;
+}
+
+.modalBody {
+  padding: var(--space-4) var(--space-5);
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  align-items: flex-start;
+}
+
+.previewText {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--color-text);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-4);
+  width: 100%;
+}

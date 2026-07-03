@@ -1,0 +1,70 @@
+# ============================================================
+# ProcWing WhatsApp AR Agent — .gitignore
+# ============================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.so
+*.dylib
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# ---- Environment / secrets (NEVER commit) ----
+backend/.env
+.env
+.env.*
+!.env.example
+!backend/.env.example
+
+# ---- FastAPI / Uvicorn ----
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+
+# ---- Data store (runtime-generated, not source code) ----
+backend/data/store.json
+
+# ---- Node / Frontend ----
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+frontend/.vite/
+.vite/
+
+# npm / yarn / pnpm lock files are typically committed, but
+# node_modules must never be.
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- IDE / Editor ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---- OS ----
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---- Misc ----
+hello.txt
+*.log
